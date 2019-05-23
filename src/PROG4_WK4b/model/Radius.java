@@ -45,13 +45,13 @@ public class Radius {
 	
 	public void transformX(double centerToBoundaryDistance) {
 		this.horizontalRadius = Math.min(originalRadius, centerToBoundaryDistance);
-		this.verticalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_Y * orignalRadius, this.verticalRadius + (orignalRadius - this.horizontalRadius)));
+		this.verticalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_Y * originalRadius, this.verticalRadius + (originalRadius - this.horizontalRadius)));
 	}
 
 	
 	public void transformY(double centerToBoundaryDistance) {
 		this.verticalRadius = Math.min(originalRadius, centerToBoundaryDistance);
-		this.horizontalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_X * orignalRadius, this.horizontalRadius + (orignalRadius - this.verticalRadius)));
+		this.horizontalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_X * originalRadius, this.horizontalRadius + (originalRadius - this.verticalRadius)));
 	}
 
 	
