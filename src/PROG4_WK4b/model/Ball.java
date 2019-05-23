@@ -16,53 +16,55 @@ public class Ball {
 		this.centerX = centerX;
 		this.centerY = centerY;
 		this.originalRadius = radius;
-		this.radius = new CircleRadius(radius);
+		this.radius = new Radius(radius, radius);
 		horizontalSpeed = 0.5;
 		verticalSpeed = 0.75;
 	}
 
 	public BallRepresentation move(double topBoundary, double rightBoundary, double bottomBoundary, double leftBoundary) {
-		double newCenterX = centerX + radius.absoluteHorizontalSpeed(horizontalSpeed);
-		double newCenterY = centerY + radius.absoluteVerticalSpeed(verticalSpeed);
-		
+		this.centerX += radius.absoluteHorizontalSpeed(horizontalSpeed);
 		if (horizontalSpeed < 0) {
-			if (leftBoundary < radius.leftBoundary(newCenterX)) {
-				this.centerX = newCenterX;
-			} else {
-				radius = radius.transformX(originalRadius - (newCenterX - leftBoundary));
-				this.centerX += radius.absoluteHorizontalSpeed(horizontalSpeed);
+			if (radius.percentageHorizontalOf(this.originalRadius) < 1) {
+				radius.transformX(originalRadius, Math.abs(centerX - rightBoundary));
+			} else if (leftBoundary >= radius.leftBoundary(centerX)) {
+				radius.transformX(originalRadius, Math.abs(centerX - leftBoundary));
+				if (radius.percentageHorizontalOf(this.originalRadius) <= MIN_RADIUS_X) {
+					this.horizontalSpeed *= -1;
+				}
 			}
 		} else {
-			if (radius.rightBoundary(newCenterX) >= rightBoundary) {
-				radius = radius.transformX(originalRadius - (rightBoundary - newCenterX));
-				this.centerX += radius.absoluteHorizontalSpeed(horizontalSpeed);
-			} else {
-				System.out.println(this.centerX);
-				this.centerX = newCenterX;
-			}
-		}
-		
-		if (verticalSpeed < 0) {
-			if (topBoundary < radius.topBoundary(newCenterY)) {
-				this.centerY = newCenterY;
-			} else {
-				radius = radius.transformY(originalRadius - (newCenterY - topBoundary));
-				this.centerY += radius.absoluteVerticalSpeed(verticalSpeed);
-			}
-		} else {
-			if (radius.bottomBoundary(newCenterY) < bottomBoundary) {
-				this.centerY = newCenterY;
-			} else {
-				radius = radius.transformY(originalRadius - (bottomBoundary - newCenterY));
-				this.centerY += radius.absoluteVerticalSpeed(verticalSpeed);
+			System.out.println(radius.percentageHorizontalOf(this.originalRadius));
+			if (radius.percentageHorizontalOf(this.originalRadius) < 1) {
+				radius.transformX(originalRadius, Math.abs(centerX - leftBoundary));
+			} else if (radius.rightBoundary(centerX) >= rightBoundary) {
+				radius.transformX(originalRadius, Math.abs(centerX - rightBoundary));
+				if (radius.percentageHorizontalOf(this.originalRadius) <= MIN_RADIUS_X) {
+					this.horizontalSpeed *= -1;
+				}
 			}
 		}
 
-		if (radius.percentageHorizontalOf(this.originalRadius) <= MIN_RADIUS_X) {
-			this.horizontalSpeed *= -1;
-		}
-		if (radius.percentageVerticalOf(this.originalRadius) <= MIN_RADIUS_Y) {
-			this.verticalSpeed *= -1;
+		this.centerY += radius.absoluteVerticalSpeed(verticalSpeed);
+		
+		if (verticalSpeed < 0) {
+			if (radius.percentageVerticalOf(this.originalRadius) < 1) {
+				radius.transformY(originalRadius, Math.abs(centerY - bottomBoundary));
+			} else if (topBoundary >= radius.topBoundary(centerY)) {
+				radius.transformY(originalRadius, Math.abs(centerY - topBoundary));
+				if (radius.percentageVerticalOf(this.originalRadius) <= MIN_RADIUS_Y) {
+					this.verticalSpeed *= -1;
+				}
+			}
+		} else {
+			if (radius.percentageVerticalOf(this.originalRadius) < 1) {
+				radius.transformY(originalRadius, Math.abs(centerY - topBoundary));
+				
+			} else if (radius.bottomBoundary(centerY) >= bottomBoundary) {
+				radius.transformY(originalRadius, Math.abs(centerY - bottomBoundary));
+				if (radius.percentageVerticalOf(this.originalRadius) <= MIN_RADIUS_Y) {
+					this.verticalSpeed *= -1;
+				}
+			}
 		}
 
 		return new BallRepresentation(centerX, centerY, radius);
