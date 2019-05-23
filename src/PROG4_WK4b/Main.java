@@ -20,7 +20,7 @@ public class Main extends Application {
 			
 			Ball ball = new Ball(50, 50, 40);
 			PROG4_Wk4b.controller.Ball controller = new PROG4_Wk4b.controller.Ball(ball);
-			PROG4_Wk4b.view.Ball view = new PROG4_Wk4b.view.Ball(10, controller);
+			PROG4_Wk4b.view.Ball view = new PROG4_Wk4b.view.Ball(60, controller);
 			pane.setCenter(view);
 			
 			Scene scene = new Scene(pane, 400, 400);
