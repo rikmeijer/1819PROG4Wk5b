@@ -2,12 +2,14 @@ package PROG4_WK4b.model;
 
 public class Radius {
 
+	final double originalRadius;
 	private double horizontalRadius;
 	private double verticalRadius;
 
-	public Radius(double horizontalRadius, double verticalRadius) {
-		this.horizontalRadius = horizontalRadius;
-		this.verticalRadius = verticalRadius;
+	public Radius(double radius) {
+		this.originalRadius = radius;
+		this.horizontalRadius = radius;
+		this.verticalRadius = radius;
 	}
 
 	
@@ -41,25 +43,25 @@ public class Radius {
 	}
 
 	
-	public void transformX(double orignalRadius, double centerToBoundaryDistance) {
-		this.horizontalRadius = Math.min(orignalRadius, centerToBoundaryDistance);
-		this.verticalRadius = Math.min(orignalRadius, Math.max(Ball.MIN_RADIUS_Y * orignalRadius, this.verticalRadius + (orignalRadius - this.horizontalRadius)));
+	public void transformX(double centerToBoundaryDistance) {
+		this.horizontalRadius = Math.min(originalRadius, centerToBoundaryDistance);
+		this.verticalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_Y * orignalRadius, this.verticalRadius + (orignalRadius - this.horizontalRadius)));
 	}
 
 	
-	public void transformY(double orignalRadius, double centerToBoundaryDistance) {
-		this.verticalRadius = Math.min(orignalRadius, centerToBoundaryDistance);
-		this.horizontalRadius = Math.min(orignalRadius, Math.max(Ball.MIN_RADIUS_X * orignalRadius, this.horizontalRadius + (orignalRadius - this.verticalRadius)));
+	public void transformY(double centerToBoundaryDistance) {
+		this.verticalRadius = Math.min(originalRadius, centerToBoundaryDistance);
+		this.horizontalRadius = Math.min(originalRadius, Math.max(Ball.MIN_RADIUS_X * orignalRadius, this.horizontalRadius + (orignalRadius - this.verticalRadius)));
 	}
 
 	
-	public double percentageHorizontalOf(double radius) {
-		return this.horizontalRadius / radius;
+	public double percentageHorizontalOf() {
+		return this.horizontalRadius / originalRadius;
 	}
 
 	
-	public double percentageVerticalOf(double radius) {
-		return this.verticalRadius / radius;
+	public double percentageVerticalOf() {
+		return this.verticalRadius / originalRadius;
 	}
 	
 	
